@@ -60,6 +60,14 @@ exports.login = async (req, res) => {
 
         const { email, password } = req.body
 
+        if(!email){
+            return res.status(400).json({message:"Email is required!"})
+        }
+
+        if(!password){
+            return res.status(400).json({message:"Password is required!"})
+        }
+
         const user = await User.findOne({
             where: { email }
         })
@@ -89,7 +97,7 @@ exports.login = async (req, res) => {
 
         const token = jwt.sign(
             payload,
-            process.env.JWT_SECRET || "mysecret",
+            process.env.JWT_SECRET,
             {
                 expiresIn: '1d'
             }
@@ -111,8 +119,17 @@ exports.login = async (req, res) => {
 
 exports.currentUser = async (req, res) => {
 
-    res.json({
-        user: req.user
-    })
+    try{
+        const user = await User.findByPk(req.user.id,{
+            attributes: {
+                exclude: ['password']
+            }
+        })
+
+        res.json({user})
+        console.log(user)
+    }catch(err){
+        res.status(500).json({message:"Server Error"})
+    }
 
 }

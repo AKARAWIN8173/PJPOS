@@ -11,7 +11,6 @@ const Store = sequelize.define('Store',{
 
     storename: {
         type: DataTypes.STRING(100),
-        unique: true,
         allowNull: false,
         validate: {
             len:[3,100]

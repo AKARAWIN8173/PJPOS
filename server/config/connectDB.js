@@ -1,6 +1,3 @@
-// โหลดค่าจากไฟล์ .env เข้ากระบวนการทำงานของ Node.js
-require('dotenv').config();
-
 // เรียกใช้ sequelize
 const { Sequelize } = require('sequelize');
 
