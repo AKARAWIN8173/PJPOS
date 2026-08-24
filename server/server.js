@@ -5,7 +5,8 @@ const app = express()
 const cors = require('cors')
 const morgan = require('morgan')
 const sequelize = require('./config/connectDB')
-const { readdirSync } = require('fs')
+const { readdirSync } = require('fs');
+const { fork } = require('cluster');
 
 require('./models/Association')
 
@@ -28,7 +29,7 @@ async function startserver() {
             await sequelize.authenticate()
             console.log('Connect to database successfully!!')
 
-            // await sequelize.sync()
+            // await sequelize.sync({ force: true })
             // console.log('Database Sync!')
 
             break

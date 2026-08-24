@@ -57,7 +57,12 @@ const User = sequelize.define('User', {
 
     image: {
         type: DataTypes.STRING,
-    }
+    },
+    
+    imagePublicId: {
+    type: DataTypes.STRING,
+    allowNull: true
+}
 
 
 }, {

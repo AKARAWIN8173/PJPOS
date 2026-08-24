@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../config/connectDB')
 
-const Store = sequelize.define('Store',{
+const Store = sequelize.define('Store', {
 
     id: {
         type: DataTypes.INTEGER,
@@ -13,21 +13,26 @@ const Store = sequelize.define('Store',{
         type: DataTypes.STRING(100),
         allowNull: false,
         validate: {
-            len:[3,100]
+            len: [3, 100]
         },
     },
 
     image: {
         type: DataTypes.STRING,
     },
+
+    imagePublicId: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     //FK
     userId: {
         type: DataTypes.INTEGER,
-        allowNull:false
+        allowNull: false
     },
 },
-{
-    timestamps: true
-})
+    {
+        timestamps: true
+    })
 
 module.exports = Store

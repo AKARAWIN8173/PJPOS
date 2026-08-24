@@ -9,9 +9,9 @@ const upload = require("../middlewares/upload")
 
 //ตรวจสอบว่า login หรือยังที่ authenticate -> แยก req.body req.file โดย multer -> เข้า fnc create
 router.post('/stores',authenticate, upload.single("image"), create)
-router.get('/stores', list)
-router.patch('/stores/:id', update)
-router.delete('/stores/:id', remove)
+router.get('/stores', authenticate, list)
+router.patch('/stores/:id',authenticate,upload.single("image"), update)
+router.delete('/stores/:id',authenticate, remove)
 
 //นำออกไปใช้
 module.exports = router

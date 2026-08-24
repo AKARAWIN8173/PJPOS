@@ -61,3 +61,20 @@ exports.uploadToCloudinaryProduct = (buffer) => {
         streamifier.createReadStream(buffer).pipe(stream)
     })
 }
+
+
+//remove picture from cloudinay
+exports.deleteFromCloudinary = (publicId) => {
+    return new Promise((resolve, reject) => {
+        cloudinary.uploader.destroy(
+            publicId,
+            (err, result) => {
+                if (err) {
+                    return reject(err)
+                }
+
+                resolve(result)
+            }
+        )
+    })
+}

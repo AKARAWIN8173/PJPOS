@@ -33,7 +33,7 @@ const Product = sequelize.define('Product', {
     },
 
     costPrice: {
-        type: DataTypes.DECIMAL(11,2),
+        type: DataTypes.DECIMAL(11, 2),
         allowNull: false,
         validate: {
             min: 0,
@@ -41,7 +41,7 @@ const Product = sequelize.define('Product', {
     },
 
     salePrice: {
-        type: DataTypes.DECIMAL(11,2),
+        type: DataTypes.DECIMAL(11, 2),
         allowNull: false,
         validate: {
             min: 0,
@@ -51,17 +51,22 @@ const Product = sequelize.define('Product', {
     quantity: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
-        validate:{
+        validate: {
             min: 0,
         },
     },
 
     image: {
         type: DataTypes.STRING,
+    },
+
+    imagePublicId: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 },
-{
-    timestamps: true,
-})  
+    {
+        timestamps: true,
+    })
 
 module.exports = Product
