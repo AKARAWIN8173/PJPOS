@@ -12,6 +12,13 @@ exports.create = async (req, res) => {
         if (!storename) {
             return res.status(400).json({ message: "storename is require!" })
         }
+
+
+        if(storename.trim().length < 3 || storename.trim().length > 100){
+            return res.status(401).json({
+                message: "storename must be between 3 and 100 characters"
+            })
+        }
         //ตรวจวอบว่ามี req.file ไหท
         if (req.file) {
             //ถ้ามีก็ให้ส่ง req.file.buffer เข้าไปใน fuc uploadToCloudinarystore
@@ -49,6 +56,18 @@ exports.update = async (req, res) => {
     try {
         const { id } = req.params
         const { storename } = req.body
+
+        if(!storename){
+            return res.status(401).json({
+                message: "name is require!!"
+            })
+        }
+
+        if(storename.trim().length < 3 || storename.trim().length > 100){
+            return res.status(401).json({
+                message: "storename must be between 3 and 100 characters"
+            })
+        }
 
         const store = await Store.findOne({
             where: {

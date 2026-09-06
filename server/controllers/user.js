@@ -2,6 +2,16 @@ const User = require('../models/User')
 const { uploadToCloudinaryUser, deleteFromCloudinary } = require('../utils/uploadToCloudinary')
 const { Op } = require('sequelize')
 
+//     / ... /	ตัวปิดหัว-ท้าย เพื่อบอก JavaScript ว่าส่วนนี้คือ Regular Expression
+        //     ^	** จุดเริ่มต้น** ของข้อความ
+        //     [^\s@]+	ชื่ออีเมล (หน้า @): ห้ามมีช่องว่าง (\s) และ ห้ามมีเครื่องหมาย @ โดยต้องมีอย่างน้อย 1 ตัวอักษรขึ้นไป (+)
+        //     @	ต้องมีเครื่องหมาย @ คั่นตรงกลาง 1 ตัว
+        //     [^\s@]+	ชื่อโดเมน (หลัง @): ห้ามมีช่องว่าง และ ห้ามมี @ อย่างน้อย 1 ตัวอักษรขึ้นไป
+        //     \.	ต้องมี จุด (.) คั่น (ใส่ \ เพื่อ escape ไม่ให้หมายถึง "ตัวอักษรอะไรก็ได้")
+        //     [^\s@]+	นามสกุลโดเมน (หลังจุด): เช่น com, co.th ห้ามมีช่องว่าง และ ห้ามมี @ อย่างน้อย 1 ตัวอักษรขึ้นไป
+        //     $	จุดสิ้นสุด ของข้อความ
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 exports.list = async (req, res) => {
 
     try {
@@ -60,16 +70,42 @@ exports.update = async (req, res) => {
             return res.status(404).json({
                 message: "User not found"
             })
+        }else{
+            if(user.email == email){
+                return res.status(401).json({
+                    message: "You are using the same email."
+                })
+            }
         }
 
         // แก้ username
         if (username) {
+
+            if (username.length < 5 || username.length > 20) {
+                return res.status(400).json({
+                    message: "Username must be between 5 and 20 characters"
+                })
+            }
+
             user.username = username
+        } else {
+            return res.status(401).json({
+                message: "Username is require!!"
+            })
         }
 
         // แก้ email
         if (email) {
-            user.email = email
+            if (!emailRegex.test(email)) {
+                return res.status(400).json({ message: "Invalid email format!!" });
+            }else{
+                user.email = email
+            }
+            
+        } else {
+            return res.status(401).json({
+                message: "Email is require!!"
+            })
         }
 
         // ถ้ามีรูปใหม่
@@ -115,8 +151,14 @@ exports.updatebyuser = async (req, res) => {
 
         if (!user) {
             return res.status(404).json({
-                message: "User not found111"
+                message: "User not found"
             })
+        }else{
+            if(user.email == email){
+                return res.status(401).json({
+                    message: "You are using the same email."
+                })
+            }
         }
 
         // แก้ username
@@ -129,11 +171,24 @@ exports.updatebyuser = async (req, res) => {
             }
 
             user.username = username
+        } else {
+            return res.status(401).json({
+                message: "Username is require!!"
+            })
         }
 
         // แก้ email
         if (email) {
-            user.email = email
+            if (!emailRegex.test(email)) {
+                return res.status(400).json({ message: "Invalid email format!!" });
+            }else{
+                user.email = email
+            }
+            
+        } else {
+            return res.status(401).json({
+                message: "Email is require!!"
+            })
         }
 
         // ถ้ามีรูปใหม่
